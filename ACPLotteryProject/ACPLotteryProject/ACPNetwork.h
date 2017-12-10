@@ -16,8 +16,8 @@
 #define AppUpdateCode           @"d60a197a6585d6d0b3b48fddf6008d11"   //检测新版本更新code
 #define AppUpdatePeramters      @{@"code":AppUpdateCode}
 
-#define AppKey                  @"59eada12c62dca31c600084e"           //友盟appKey
-#define AppSecret               @"cwjna0e96kxedqikclbubwbujfyc8c9r"  //友盟app 秘钥
+#define AppKey                  @"5a23be4af29d987740000301"           //友盟appKey
+#define AppSecret               @"lesszpiri6iroomanhytywvrp4me6nny"  //友盟app 秘钥
 
 #define COMPANYPARA             @{@"app_id":@"1258070698"}            //appID
 #define CacheKey                @"ACPCacheKey"
@@ -38,7 +38,7 @@
 //_Pragma("clang diagnostic pop") \
 //})
 
-#define BaseHttpUrl   NETWORK_STATE ?  @"http://169.56.130.24:8098":@"http://172.16.5.105:8080"// @"http://172.16.1.67:8080"http://172.16.5.105:8080 @"http://172.16.2.175:8080"//[[YYCache cacheWithName:CacheKey] objectForKey:@"serviceHost"]
+#define BaseHttpUrl   NETWORK_STATE ?  [[YYCache cacheWithName:CacheKey] objectForKey:@"serviceHost"]:@"http://172.16.5.105:8080"// @"http://172.16.1.67:8080"http://172.16.5.105:8080 @"http://172.16.2.175:8080"//@"http://169.56.130.24:8098"
 
 #define BaseUrl(url)  [NSString stringWithFormat:@"%@%@",BaseHttpUrl,url]
 
@@ -97,6 +97,7 @@
 #define NewsDetail       @"/consult/mobile/queryNewConsultDetail"              //新闻详情
 //走势
 #define LotteryHisList   @"/lottery/award/pc/getLotteryOpenAwardHistoryList"   //走势图
+#define LotTrendsList    @"/lottery/mobile/getLotteryGameList"                 //走势图的title列表
 //发现
 #define NewsClass        @"/consult/mobile/queryNovicePulpit"                  //新手讲堂
 #define NewsClassDetail  @"/consult/mobile/queryNovicePulpitDetail"            //新手讲堂详情

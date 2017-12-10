@@ -258,6 +258,7 @@
 		884B2E821F8C9B45003ABDE7 /* ACPIntegralDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPIntegralDetailViewController.m; sourceTree = "<group>"; };
 		884B2E841F8E3214003ABDE7 /* ACPBannerViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPBannerViewCell.h; sourceTree = "<group>"; };
 		884B2E851F8E3214003ABDE7 /* ACPBannerViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPBannerViewCell.m; sourceTree = "<group>"; };
+		884DBFE91FD4175600651756 /* ACPLotteryProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ACPLotteryProject.entitlements; sourceTree = "<group>"; };
 		8869C9831F7B7404004F3608 /* ACPLotteryProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ACPLotteryProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8869C9871F7B7404004F3608 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8869C9891F7B7404004F3608 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../../AppDelegate.h; sourceTree = "<group>"; };
@@ -893,6 +894,7 @@
 		8869C9851F7B7404004F3608 /* ACPLotteryProject */ = {
 			isa = PBXGroup;
 			children = (
+				884DBFE91FD4175600651756 /* ACPLotteryProject.entitlements */,
 				8869C9B91F7B7968004F3608 /* Classes */,
 				88EF39A71F9F37D90016D7BA /* Resource */,
 				8869C9861F7B7404004F3608 /* Supporting Files */,
@@ -2003,7 +2005,12 @@
 					8869C9821F7B7404004F3608 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = 7W8E998SSL;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					8869C99B1F7B7404004F3608 = {
 						CreatedOnToolsVersion = 8.3.2;
@@ -2418,9 +2425,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 7W8E998SSL;
+				CODE_SIGN_ENTITLEMENTS = ACPLotteryProject/ACPLotteryProject.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ACPLotteryProject/Classes/Tools/UMeng",
@@ -2436,8 +2444,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.NewACPProject.www;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d54f35f6-22c1-41bb-91ec-416829dad873";
-				PROVISIONING_PROFILE_SPECIFIER = NewACPProjectInHouse;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -2447,9 +2455,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 7W8E998SSL;
+				CODE_SIGN_ENTITLEMENTS = ACPLotteryProject/ACPLotteryProject.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ACPLotteryProject/Classes/Tools/UMeng",
@@ -2465,8 +2474,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.NewACPProject.www;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d54f35f6-22c1-41bb-91ec-416829dad873";
-				PROVISIONING_PROFILE_SPECIFIER = NewACPProjectInHouse;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

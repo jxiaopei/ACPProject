@@ -12,12 +12,12 @@
 
 +(ACPBaseNetworkServiceTool *)shareServiceTool;
 
--(void)setNetWorkService;
+-(void)setNetWorkServiceWIthComplateBlock:(void(^)())complateBlock failureBlock:(void(^)())failureBlock;
 
 -(void)getAppBaseInfors;
 
--(void)getUpdateInfor;
+-(void)getUpdateInforWithCallBack:(void(^)())callBack;
 
--(void)httpDNSAction;
+-(void)httpDNSActionWIthComplateBlock:(void(^)())complateBlock failureBlock:(void(^)())failureBlock;
 
 @end

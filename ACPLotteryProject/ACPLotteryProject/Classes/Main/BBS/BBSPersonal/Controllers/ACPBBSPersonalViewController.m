@@ -49,7 +49,6 @@
     [self setupNavigationTitleView];
     [self setupUI];
     [self setupTableView];
-    
 }
 
 -(void)setupNavigationTitleView{

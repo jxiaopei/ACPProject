@@ -62,8 +62,6 @@
         
     }];
     
-    
-    
 }
 
 -(void)getSignInList{
@@ -177,8 +175,7 @@
             return;
         }
     }
-    
-  
+
         NSDictionary *dict = @{
                                @"token":@"4d2cbce9-4338-415e-8343-7c9e67dae7ef",
                                @"uri":SignInAction,
@@ -202,8 +199,6 @@
         }];
 
 }
-
-
 
 -(void)showSuccessView{
     UIImageView *signInSuccessView = [UIImageView new];

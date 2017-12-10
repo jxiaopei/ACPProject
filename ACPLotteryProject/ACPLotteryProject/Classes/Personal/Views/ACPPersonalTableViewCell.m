@@ -33,7 +33,6 @@
         }];
         titleLabel.font = [UIFont systemFontOfSize:13];
         
-        
         UILabel *detailLabel = [UILabel new];
         [self addSubview:detailLabel];
         _detailLabel = detailLabel;
@@ -43,6 +42,16 @@
         }];
         detailLabel.font = [UIFont systemFontOfSize:11];
         detailLabel.textColor = [UIColor grayColor] ;
+        
+        UIView *lineView = [UIView new];
+        [self addSubview:lineView];
+        [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(0);
+            make.right.mas_equalTo(0);
+            make.bottom.mas_equalTo(0);
+            make.height.mas_equalTo(0.5);
+        }];
+        lineView.backgroundColor = GlobalLightGreyColor;
     }
     return self;
 }

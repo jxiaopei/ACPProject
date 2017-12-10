@@ -19,6 +19,18 @@
     if([_lottery_name isEqualToString:@"北京快乐8"]){
         return (SCREENWIDTH - 85)/10 * 3  + 3 + 60;
     }else{
+        if([_lottery_extra_0 isNotNil]){
+          return (SCREENWIDTH - 85)/10 * 2 + 60;
+        }else{
+          return (SCREENWIDTH - 85)/10 * 2 + 30;
+        }
+    }
+}
+
+-(CGFloat)typeRowHeight{
+    if([_lottery_name isEqualToString:@"北京快乐8"]){
+        return (SCREENWIDTH - 85)/10 * 3  + 3 + 60;
+    }else{
         return (SCREENWIDTH - 85)/10 * 2 + 60;
     }
 }

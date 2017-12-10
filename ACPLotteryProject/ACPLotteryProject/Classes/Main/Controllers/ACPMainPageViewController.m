@@ -65,11 +65,13 @@
 
 -(void)getData{
     NSLog(@"%@",BaseUrl(HomepageUrl));
+    
     NSDictionary *dict = @{
                            @"token":@"4d2cbce9-4338-415e-8343-7c9e67dae7ef",
                            @"uri":HomepageUrl,
                            @"paramData":@{}
                            };
+   
     [[ACPNetworkTool getInstance] postDataWithUrl:BaseUrl(HomepageUrl) parameters:dict success:^(id responseObject) {
         [_scrollview.mj_header endRefreshing];
         if([responseObject[@"code"] isEqualToString:@"0000"])
@@ -107,7 +109,7 @@
     UIScrollView *scrollView = [UIScrollView new];
     scrollView.backgroundColor = [UIColor whiteColor];
     _scrollview = scrollView;
-    scrollView.contentSize = CGSizeMake(SCREENWIDTH, 800);
+    scrollView.contentSize = CGSizeMake(SCREENWIDTH, 785);
     [self.view addSubview:scrollView];
     [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.left.right.mas_equalTo(0);
@@ -143,7 +145,7 @@
     layout.itemSize = CGSizeMake((SCREENWIDTH - 4)/5, 105);
     layout.minimumLineSpacing = 0;
     layout.minimumInteritemSpacing = 0;
-    UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 210, SCREENWIDTH, 170) collectionViewLayout:layout];
+    UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 210, SCREENWIDTH, 145) collectionViewLayout:layout];
     [_scrollview addSubview:collectionView];
     collectionView.tag = 100;
     collectionView.backgroundColor = [UIColor whiteColor];
@@ -151,38 +153,38 @@
     collectionView.scrollEnabled = NO;
     collectionView.delegate = self;
     collectionView.dataSource = self;
-    [collectionView setContentInset:UIEdgeInsetsMake(45, 2, 20, 2)];
+    [collectionView setContentInset:UIEdgeInsetsMake(20, 2, 20, 2)];
     [collectionView registerClass:[ACPMianPageCollectionViewCell class] forCellWithReuseIdentifier:@"mainPageCell"];
     
-    UIView *verView = [UIView new];
-    [_scrollview addSubview:verView];
-    verView.frame = CGRectMake(10, 225, 2, 15);
-    verView.backgroundColor = [UIColor redColor];;
-    
-    UILabel *titleLabel = [UILabel new];
-    [_scrollview addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(verView.mas_right).mas_offset(5);
-        make.centerY.mas_equalTo(verView.mas_centerY);
-    }];
-    titleLabel.font = [UIFont systemFontOfSize:13];
-    titleLabel.text = @"其他服务";
+//    UIView *verView = [UIView new];
+//    [_scrollview addSubview:verView];
+//    verView.frame = CGRectMake(10, 225, 2, 15);
+//    verView.backgroundColor = [UIColor redColor];;
+//
+//    UILabel *titleLabel = [UILabel new];
+//    [_scrollview addSubview:titleLabel];
+//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(verView.mas_right).mas_offset(5);
+//        make.centerY.mas_equalTo(verView.mas_centerY);
+//    }];
+//    titleLabel.font = [UIFont systemFontOfSize:13];
+//    titleLabel.text = @"其他服务";
     
     UIView *lineView = [UIView new];
     [_scrollview addSubview:lineView];
-    lineView.frame = CGRectMake(0, 380, SCREENWIDTH, 5);
+    lineView.frame = CGRectMake(0, 355, SCREENWIDTH, 5);
     lineView.backgroundColor = GlobalLightGreyColor;
 }
 
 -(void)setupAdvertimentsView{
-    _advertismentView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 385, SCREENWIDTH, 100) delegate:self placeholderImage:[UIImage imageNamed:@"占位图"]];
+    _advertismentView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 360, SCREENWIDTH, 140) delegate:self placeholderImage:[UIImage imageNamed:@"占位图"]];
     [_scrollview addSubview:_advertismentView];
     _advertismentView.showPageControl = YES;
     _advertismentView.pageControlStyle = SDCycleScrollViewPageContolStyleClassic;
     _advertismentView.tag = 2000;
     UIView *lineView = [UIView new];
     [_scrollview addSubview:lineView];
-    lineView.frame = CGRectMake(0, 485, SCREENWIDTH, 5);
+    lineView.frame = CGRectMake(0, 500, SCREENWIDTH, 5);
     lineView.backgroundColor = GlobalLightGreyColor;
 }
 
@@ -192,7 +194,7 @@
     layout.itemSize = CGSizeMake((SCREENWIDTH - 4)/3, 85);
     layout.minimumLineSpacing = 0;
     layout.minimumInteritemSpacing = 0;
-    UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 490, SCREENWIDTH, 310) collectionViewLayout:layout];
+    UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 510, SCREENWIDTH, 275) collectionViewLayout:layout];
     [_scrollview addSubview:collectionView];
     collectionView.tag = 200;
     collectionView.backgroundColor = [UIColor whiteColor];
@@ -200,22 +202,22 @@
     collectionView.scrollEnabled = NO;
     collectionView.delegate = self;
     collectionView.dataSource = self;
-    [collectionView setContentInset:UIEdgeInsetsMake(45, 2, 10, 2)];
+    [collectionView setContentInset:UIEdgeInsetsMake(10, 2, 10, 2)];
     [collectionView registerClass:[ACPMainPageLotteryCell class] forCellWithReuseIdentifier:@"lotteryCell"];
     
-    UIView *verView = [UIView new];
-    [_scrollview addSubview:verView];
-    verView.frame = CGRectMake(10, 505, 2, 15);
-    verView.backgroundColor = [UIColor redColor];;
-    
-    UILabel *titleLabel = [UILabel new];
-    [_scrollview addSubview:titleLabel];
-    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(verView.mas_right).mas_offset(5);
-        make.centerY.mas_equalTo(verView.mas_centerY);
-    }];
-    titleLabel.font = [UIFont systemFontOfSize:13];
-    titleLabel.text = @"全部彩种";
+//    UIView *verView = [UIView new];
+//    [_scrollview addSubview:verView];
+//    verView.frame = CGRectMake(10, 505, 2, 15);
+//    verView.backgroundColor = [UIColor redColor];;
+//
+//    UILabel *titleLabel = [UILabel new];
+//    [_scrollview addSubview:titleLabel];
+//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(verView.mas_right).mas_offset(5);
+//        make.centerY.mas_equalTo(verView.mas_centerY);
+//    }];
+//    titleLabel.font = [UIFont systemFontOfSize:13];
+//    titleLabel.text = @"全部彩种";
 }
 
 - (void)viewWillAppear:(BOOL)animated {

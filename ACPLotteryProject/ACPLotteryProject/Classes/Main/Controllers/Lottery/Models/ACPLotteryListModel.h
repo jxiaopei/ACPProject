@@ -28,6 +28,7 @@
 @property (nonatomic,assign)NSInteger reply_count;
 @property (nonatomic,copy) NSString *lottery_trend_chart_link;
 @property (nonatomic,assign)CGFloat rowHeight;
+@property (nonatomic,assign)CGFloat typeRowHeight;
 @property (nonatomic,assign)NSInteger indexNumber;
 //@property (nonatomic, assign) BOOL kaijiang;
 //@property (nonatomic, assign) BOOL opened;

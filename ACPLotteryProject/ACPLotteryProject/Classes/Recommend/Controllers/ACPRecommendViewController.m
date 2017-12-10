@@ -180,6 +180,7 @@
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.sectionFooterHeight = 5;
+//        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
         _tableView.tableHeaderView = [self setupBannerView];
         [_tableView registerClass:[ACPPartnerTableViewCell class] forCellReuseIdentifier:@"LCPartnerTableViewCell"];

@@ -32,4 +32,19 @@
     [super pushViewController:viewController animated:animated];
 }
 
+-(BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return [self.viewControllers.lastObject supportedInterfaceOrientations];
+}
+
+-(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return [self.viewControllers.lastObject preferredInterfaceOrientationForPresentation];
+}
+
 @end

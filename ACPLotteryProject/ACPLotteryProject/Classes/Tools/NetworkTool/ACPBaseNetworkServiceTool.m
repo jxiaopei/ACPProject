@@ -31,21 +31,40 @@
     return tool;
 }
 
--(void)httpDNSAction{
+-(void)httpDNSActionWIthComplateBlock:(void(^)())complateBlock failureBlock:(void(^)())failureBlock{
     [[ACPNetworkTool getInstance]getJsonWithUrl:AppHttpDNS parameters:nil success:^(id responseObject) {
         Log_ResponseObject;
         
         NSString *ipStr = responseObject[@"currentData"];
         if([responseObject[@"currentStatus"] intValue] == 0){
             YYCache *cache = [YYCache cacheWithName:CacheKey];
-            [cache setObject:[NSString stringWithFormat:@"http://%@:8080",ipStr] forKey:@"serviceHost"];
+            if([ipStr isNotNil]){
+                [cache setObject:[NSString stringWithFormat:@"http://%@:8098",ipStr] forKey:@"serviceHost"];
+                complateBlock();
+            }else{
+                [self setNetWorkServiceWIthComplateBlock:^{
+                    complateBlock();
+                }failureBlock:^{
+                    failureBlock();
+                }];
+            }
+        }else{
+            [self setNetWorkServiceWIthComplateBlock:^{
+                complateBlock();
+            }failureBlock:^{
+                failureBlock();
+            }];
         }
     } fail:^(NSError *error) {
-        
+        [self setNetWorkServiceWIthComplateBlock:^{
+            complateBlock();
+        }failureBlock:^{
+            failureBlock();
+        }];
     }];
 }
 
--(void)setNetWorkService{
+-(void)setNetWorkServiceWIthComplateBlock:(void(^)())complateBlock failureBlock:(void(^)())failureBlock{
     
     NSDictionary *paramers = @{@"paramData":@{@"code":@"acp"},
                                @"uri":@"/getDomainMapper",
@@ -63,25 +82,26 @@
                         [self updateInvalidURLs];
                         YYCache *cache = [YYCache cacheWithName:CacheKey];
                         [cache setObject:inforModel.domain forKey:@"serviceHost"];
+                        complateBlock();
                         
-//                        [[UIApplication sharedApplication] keyWindow].rootViewController = [ACPBaseTabBarController new]; //成功则指向tabBarController 失败则保留在空白页
-                        return ;
                     }callback:^{
                         [self.invalidUrlArr addObject:inforModel];
                         if(i == serviceInforArr.count - 1){
                             //测试域名全部失败 上传失效域名
                             [self updateInvalidURLs];
-                            [[UIApplication sharedApplication] keyWindow].rootViewController = [ACPBaseViewController new];
+                            failureBlock();
+                
                         }
                     }];
                 }
             }
         }else{
-            
+            failureBlock();
         }
         
     } fail:^(NSError *error) {
         NSLog(@"%@",error.description);
+        failureBlock();
     }];
     
 }
@@ -207,7 +227,7 @@
     
 }
 
--(void)getUpdateInfor{
+-(void)getUpdateInforWithCallBack:(void(^)())callBack{
     
     [[ACPNetworkTool getInstance].sharedManager POST:AppUpdateUrl parameters:AppUpdatePeramters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
       
@@ -233,6 +253,8 @@
                 
                 [self forcedUpdate];
             }
+        }else{
+            callBack();
         }
 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

@@ -84,6 +84,7 @@
     _loginBtn.hidden = YES;
     _registBtn.hidden = YES;
     _waitLabel.hidden = YES;
+    [self.tableView reloadData];
 }
 
 -(void)setupTableView
@@ -101,8 +102,14 @@
     tableView.delegate =self;
     tableView.bounces = NO;
     tableView.showsVerticalScrollIndicator = NO;
+    tableView.estimatedSectionHeaderHeight = 10;
     [tableView registerClass:[ACPPersonalTableViewCell class] forCellReuseIdentifier:@"personalCell"];
     [tableView registerClass:[ACPPerEixtTableViewCell class] forCellReuseIdentifier:@"personalExitCell"];
+    NSString *verson = [UIDevice currentDevice].systemVersion;
+    if(verson.doubleValue > 10.3){
+        tableView.contentInset = UIEdgeInsetsMake(-20, 0, 0, 0);
+    }
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.tableFooterView = [UIView new];
     tableView.tableHeaderView = [self setHeadView];
 }
@@ -281,7 +288,6 @@
             [self.navigationController pushViewController:aboutUsVC animated:YES];
         }
     }
-    
     
 }
 

@@ -317,7 +317,10 @@
     [loginBtn setImage:[UIImage imageNamed:@"默认头像"] forState:UIControlStateNormal];
     loginBtn.layer.masksToBounds = YES;
     loginBtn.layer.cornerRadius = 15;
-    loginBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 10);
+    NSString *verson = [UIDevice currentDevice].systemVersion;
+    if(verson.doubleValue > 9.3){
+      loginBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 10);
+    }
     [loginBtn addTarget:self action:@selector(didClickLeftBtn:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBtnItem = [[UIBarButtonItem alloc]initWithCustomView:loginBtn];
     self.navigationItem.rightBarButtonItem = rightBtnItem;

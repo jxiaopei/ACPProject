@@ -191,8 +191,6 @@
 //        [_webView.scrollView setContentOffset:CGPointMake(0, 25)];
     }
     [_collectionView reloadData];
-    
-    
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{

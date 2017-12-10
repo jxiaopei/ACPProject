@@ -32,6 +32,7 @@
 
 #import "SDCollectionViewCell.h"
 #import "UIView+SDExtension.h"
+#import "Masonry.h"
 
 @implementation SDCollectionViewCell
 {
@@ -104,7 +105,16 @@
     if (self.onlyDisplayText) {
         _titleLabel.frame = self.bounds;
     } else {
-        _imageView.frame = self.bounds;
+//        _imageView.frame = self.bounds;
+        CGFloat height = self.bounds.size.height;
+        [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(0);
+            make.right.mas_equalTo(0);
+            make.top.mas_offset(0);
+            make.height.mas_equalTo(height);
+        }];
+        _imageView.contentMode = UIViewContentModeScaleAspectFill;
+        _imageView.layer.masksToBounds = YES;
         CGFloat titleLabelW = self.sd_width;
         CGFloat titleLabelH = _titleLabelHeight;
         CGFloat titleLabelX = 0;

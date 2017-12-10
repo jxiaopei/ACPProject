@@ -30,6 +30,7 @@
 @property(nonatomic,strong)UIView *markView;
 @property(nonatomic,assign)BOOL isShowView;
 @property(nonatomic,assign)NSInteger selectedNum;
+@property(nonatomic,strong)UIButton *navSelectBtn;
 @property(nonatomic,strong)UITableView *mainTableView;
 @property(nonatomic,strong)UIView *topView;
 @property(nonatomic,strong)NSArray <ACPTrendDataModel *>*dataSource;
@@ -58,6 +59,7 @@
     [self setupTopView];
     [self setupTableView];
     [self getDataWithLotteryId:_lotteryId];
+    [self getTitleData];
 }
 
 -(void)setupTableView
@@ -72,6 +74,34 @@
     tableView.tag = 100;
     [tableView registerClass:[ACPTrendListTableViewCell class] forCellReuseIdentifier:@"trendListCell"];
     _mainTableView = tableView;
+}
+
+-(void)getTitleData{
+    NSDictionary *dict = @{
+                           @"token":@"4d2cbce9-4338-415e-8343-7c9e67dae7ef",
+                           @"uri":LotTrendsList,
+                           @"paramData":@{}
+                           };
+    
+    [[ACPNetworkTool getInstance]postDataWithUrl:BaseUrl(LotTrendsList) parameters:dict success:^(id responseObject) {
+
+        if([responseObject[@"code"] isEqualToString:@"0000"])
+        {
+             NSArray *titleArr = [ACPMainPageLotteryDataModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
+            for(int i = 0; i < titleArr.count;i++){
+                ACPMainPageLotteryDataModel *model = titleArr[i];
+                if([model.lottery_name isEqualToString: _lotteryName]){
+                    _selectedNum = i;
+                    _titleArr = titleArr;
+                    return ;
+                }
+            }
+            
+        }
+        [_mainTableView reloadData];
+    } fail:^(NSError *error) {
+        
+    }];
 }
 
 -(void)getDataWithLotteryId:(NSString *)Id{
@@ -90,6 +120,10 @@
         if([responseObject[@"code"] isEqualToString:@"0000"])
         {
             _dataSource = [ACPTrendDataModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"result_List"]];
+            if(_dataSource.count ==0){
+                [MBProgressHUD showError:@"暂无数据"];
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }
         [_mainTableView reloadData];
     } fail:^(NSError *error) {
@@ -284,7 +318,8 @@
         
         UITableView *tableView = [UITableView new];
         [self.view addSubview:tableView];
-        tableView.frame = CGRectMake(0, 0, SCREENWIDTH, self.titleArr.count * 40);
+        CGFloat height = self.titleArr.count * 40 > SCREENHEIGHT - 64 ? SCREENHEIGHT - 64 : self.titleArr.count * 40;
+        tableView.frame = CGRectMake(0, 0, SCREENWIDTH, height);
         tableView.delegate = self;
         tableView.dataSource = self;
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -298,7 +333,7 @@
         [markView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.right.mas_equalTo(0);
             make.bottom.mas_equalTo(0);
-            make.height.mas_equalTo(SCREENHEIGHT - 64 - self.titleArr.count * 40);
+            make.height.mas_equalTo(SCREENHEIGHT - 64 - height);
         }];
         markView.backgroundColor = GlobalMarkViewColor;
         _markView = markView;

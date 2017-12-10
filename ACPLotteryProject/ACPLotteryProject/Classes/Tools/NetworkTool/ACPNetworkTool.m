@@ -159,7 +159,6 @@
             fail(error);
         }
     }];
-
 }
 
 -(void)postImageDataWithUrl:(NSString *)urlString parameters:(id)parameters success:(NetRequestSuccessBlock)success fail:(NetRequestFailedBlock)fail

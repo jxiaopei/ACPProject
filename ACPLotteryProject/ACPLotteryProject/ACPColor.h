@@ -21,6 +21,7 @@
 #define GlobalOrangeColor                 [UIColor colorWithHexString:@"ff9800"]//橘色
 #define GlobalBlackColor                  [UIColor blackColor];
 #define GlobalMarkViewColor               [UIColor colorWithHexString:@"000000" alpha:0.6] //遮盖层颜色
+#define GlobalLineColor                   [UIColor colorWithHexString:@"F1F1F1"]//浅灰色
 #define GlobalRedBallColor                [UIColor colorWithHexString:@"EB3232"]//红波
 
 #define GlobalGreenBallColor              [UIColor colorWithHexString:@"5ABF7E"]//绿波

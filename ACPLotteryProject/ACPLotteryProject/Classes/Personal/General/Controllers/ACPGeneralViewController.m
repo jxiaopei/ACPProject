@@ -55,14 +55,18 @@
         
 //        ACPMegCenterViewController *msgVC = [ACPMegCenterViewController new];
 //        [self.navigationController pushViewController:msgVC animated:YES];
-        [[ACPBaseNetworkServiceTool shareServiceTool] getUpdateInfor];
+        [[ACPBaseNetworkServiceTool shareServiceTool] getUpdateInforWithCallBack:^{
+            [MBProgressHUD showSuccess:@"已是最新版本"];
+        }];
         
     }else if (indexPath.row == 1){
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"清理缓存" message:@"确定要清理缓存吗?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *commitAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             CGFloat cacheSize = [ACPCleanCacheManager folderSizeAtPath];
+            NSString *baseURL = BaseHttpUrl;
             [ACPCleanCacheManager cleanCache:^{
                 [MBProgressHUD showSuccess:[NSString stringWithFormat:@"成功清理%.2fM缓存空间",cacheSize]];
+                [[YYCache cacheWithName:CacheKey] setObject:baseURL forKey: @"serviceHost"];
                 [tableView reloadData];
             }];
         }];

@@ -164,7 +164,7 @@
                            };
     [[ACPNetworkTool getInstance]postDataWithUrl:BaseUrl(LotteryRefresh) parameters:dict success:^(id responseObject) {
         
-        Log_ResponseObject;
+//        Log_ResponseObject;
         if([responseObject[@"code"] isEqualToString:@"0000"])
         {
             ACPLotteryListModel *dataModel = [ACPLotteryListModel mj_objectWithKeyValues:responseObject[@"data"][@"lottery_list"]];
@@ -250,7 +250,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ACPLotteryListModel *dataModel = self.dataSource[indexPath.row];
-    return dataModel.rowHeight + 50;
+    return dataModel.typeRowHeight + 50;
 }
 
 -(void)dealloc{

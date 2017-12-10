@@ -43,6 +43,7 @@
     tableView.delegate =self;
     tableView.bounces = NO;
     tableView.showsVerticalScrollIndicator = NO;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.rowHeight = 50;
     tableView.estimatedSectionHeaderHeight = 10;
     [tableView registerClass:[ACPPersonalTableViewCell class] forCellReuseIdentifier:@"discoverCell"];

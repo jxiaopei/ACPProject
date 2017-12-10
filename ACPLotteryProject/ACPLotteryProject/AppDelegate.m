@@ -14,8 +14,9 @@
 
 @interface AppDelegate ()
 
-@property(nonatomic,copy)NSString *updateUrl;
-@property(nonatomic,copy)void (^callBack)();
+//@property(nonatomic,copy)NSString *updateUrl;
+//@property(nonatomic,copy)void (^callBack)();
+@property(nonatomic,strong)UIView *backView;
 
 @end
 
@@ -23,15 +24,13 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//    [self.window setRootViewController:[ACPBaseViewController new]];
-    
     //延迟
 //    [NSThread sleepForTimeInterval:2.0];
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     ACPBaseTabBarController *tabBarVC = [ACPBaseTabBarController new];
-    [self.window setRootViewController:tabBarVC];//[ACPBaseViewController new]
+    [self.window setRootViewController:[ACPBaseViewController new]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:@"UIApplicationDidEnterBackgroundNotification" object:nil];
     
     //友盟统计
@@ -43,10 +42,35 @@
     [self setupAnimationImage];
     
 //    [[ACPBaseNetworkServiceTool shareServiceTool] setNetWorkService];
-    [[ACPBaseNetworkServiceTool shareServiceTool] httpDNSAction];
+    [[ACPBaseNetworkServiceTool shareServiceTool] httpDNSActionWIthComplateBlock:^{
+        [_backView removeFromSuperview];
+        [self.window setRootViewController:tabBarVC];
+        [[ACPBaseNetworkServiceTool shareServiceTool] getUpdateInforWithCallBack:^{
+            
+        }];
+    }failureBlock:^{
+        [_backView removeFromSuperview];
+        [self.window setRootViewController:[ACPBaseViewController new]];
+        [self exitAction];
+        [[ACPBaseNetworkServiceTool shareServiceTool] getUpdateInforWithCallBack:^{
+            
+        }];
+    }];
     
     return YES;
 }
+
+-(void)exitAction{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"网络错误,请重新打开app"  preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        exit(0);
+    }];
+    
+    [alert addAction:confirmAction];
+    
+    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+}
+
 - (void)addUMessage:(NSDictionary *)launchOptions {
     
     //初始化
@@ -121,17 +145,12 @@
     [self.window addSubview:backView];
     __block UIImageView *igv = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     igv.image = [UIImage imageNamed:@"爱彩票启动图1"];
-//    igv.alpha = 0.5;
     [backView addSubview:igv];
+    _backView = backView;
     
     UIImageView *goldig = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     goldig.image = [UIImage imageNamed:@"爱彩票启动图"];
-//    goldig.alpha = 0;
     [backView addSubview:goldig];
-    
-//    UIImageView *caishen = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-//    caishen.image = [UIImage imageNamed:@"caishen"];
-//    [igv addSubview:caishen];
     
     CGFloat x = [UIScreen mainScreen].bounds.origin.x;
     CGFloat y = [UIScreen mainScreen].bounds.origin.y;
@@ -141,53 +160,10 @@
     
     [UIView animateWithDuration:1 animations:^{
         igv.frame = CGRectMake(x - 10 , y - newY, width, height);
-//        igv.alpha = 1.0;
     } completion:^(BOOL finished) {
-        [NSThread sleepForTimeInterval:1.0];
-        [backView removeFromSuperview];
+//        [NSThread sleepForTimeInterval:1.0];
+//        [backView removeFromSuperview];
     }];
-    
-//    [UIView animateWithDuration:2 animations:^{
-//        goldig.alpha = 1;
-//    } completion:^(BOOL finished) {
-//        
-//        _callBack = ^{
-//            [igv removeFromSuperview];
-//            igv = nil;
-//            NSLog(@"%@",igv);
-//        };
-//        
-//        NSLog(@"%@",BaseUrl(OpenAPPAdvList));
-//        NSDictionary *dict = @{
-//                               @"token":@"4d2cbce9-4338-415e-8343-7c9e67dae7ef",
-//                               @"uri":OpenAPPAdvList,
-//                               @"paramData":@{}
-//                               };
-//        [[ACPNetworkTool getInstance] postJsonWithUrl:BaseUrl(OpenAPPAdvList) parameters:dict success:^(id responseObject) {
-//            if([responseObject[@"code"] isEqualToString:@"0000"])
-//            {
-//                if ([responseObject[@"data"] count] < 1) {
-//                    _callBack();
-//                    return ;
-//                }
-//                LCIntroView *introView = [[LCIntroView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-//                introView.images  = responseObject[@"data"];
-//                [[[UIApplication sharedApplication] keyWindow].rootViewController.view addSubview:introView];
-//                _callBack();
-//            }else{
-//                
-//            }
-//        } fail:^(NSError *error) {
-//            _callBack();
-//        }];
-//    }];
-//    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        if (igv) {
-//            [igv removeFromSuperview];
-//            igv = nil;
-//        }
-//    });
     
 }
 
@@ -263,97 +239,11 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     //检查更新
-    [[ACPBaseNetworkServiceTool shareServiceTool] getUpdateInfor];
+    [[ACPBaseNetworkServiceTool shareServiceTool] getUpdateInforWithCallBack:^{
+        
+    }];
     
 }
-
-//-(void)getUpdateInfor{
-//    
-//    [[ACPNetworkTool getInstance].sharedManager POST:AppUpdateUrl parameters:AppUpdatePeramters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        if (!responseObject || ![responseObject isKindOfClass:[NSDictionary class]]) {
-//            return ;
-//        }
-//        
-//        NSString *str = [responseObject mj_JSONString];
-//        NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-//        NSDictionary * dictData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-//        if([dictData[@"entity"][@"downloadUrl"] isKindOfClass:[NSDictionary class]]){
-//            self.updateUrl=[NSString stringWithFormat:@"itms-services:///?action=download-manifest&url=%@",dictData[@"entity"][@"downloadUrl"][@"manifest"]];
-//        }
-//        NSInteger isbool=[responseObject[@"entity"][@"versionType"] integerValue];
-//        
-//        NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-//        CFShow((__bridge CFTypeRef)(infoDictionary));
-//        NSString *appVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-//        
-//        if (![appVersion isEqualToString:responseObject[@"entity"][@"version"]]) {
-//            if (isbool==3) {
-//                
-//                [self showUpdateAlertVCWithUpdateMsg:responseObject[@"entity"][@"version"]];
-//                
-//            }else if (isbool==4){
-//                
-//                [self forcedUpdate];
-//            }
-//        }
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        
-//    }];
-//    
-//}
-//
-//-(void)forcedUpdate{
-//    
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"有重要新版本更新" message:@"为了给您更好的体验/n请更新到最新版本" preferredStyle:UIAlertControllerStyleAlert];
-//    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
-//    
-//    [NSThread sleepForTimeInterval:3.0];
-//    [[UIApplication sharedApplication]openURL:[NSURL URLWithString:self.updateUrl]];
-//}
-//
-//-(void)showUpdateAlertVCWithUpdateMsg:(NSString *)message{
-//    
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"有新版本更新" message:message preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"去更新" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:self.updateUrl]];
-//        
-//    }];
-//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"放弃更新" style:UIAlertActionStyleCancel handler:nil];
-//    
-//    [alert addAction:confirmAction];
-//    [alert addAction:cancelAction];
-//    [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
-//    
-//}
-//
-//- (UIViewController *)getCurrentVC
-//{
-//    UIViewController *result = nil;
-//    
-//    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
-//    if (window.windowLevel != UIWindowLevelNormal)
-//    {
-//        NSArray *windows = [[UIApplication sharedApplication] windows];
-//        for(UIWindow * tmpWin in windows)
-//        {
-//            if (tmpWin.windowLevel == UIWindowLevelNormal)
-//            {
-//                window = tmpWin;
-//                break;
-//            }
-//        }
-//    }
-//    
-//    UIView *frontView = [[window subviews] objectAtIndex:0];
-//    id nextResponder = [frontView nextResponder];
-//    
-//    if ([nextResponder isKindOfClass:[UIViewController class]])
-//        result = nextResponder;
-//    else
-//        result = window.rootViewController;
-//    
-//    return result;
-//}
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

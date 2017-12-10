@@ -8,10 +8,12 @@
 
 #import "ACPBaseViewController.h"
 
-@interface ACPBaseWebViewController : ACPBaseViewController
+@interface ACPBaseWebViewController : UIViewController
 
 @property(nonatomic,copy)NSString *urlString;
 @property(nonatomic,copy)NSString *titleStr;
 @property(nonatomic,strong)UIWebView *webView;
+- (void)customTitleWith:(NSString *)title;
+- (void)customBackBtn;
 
 @end

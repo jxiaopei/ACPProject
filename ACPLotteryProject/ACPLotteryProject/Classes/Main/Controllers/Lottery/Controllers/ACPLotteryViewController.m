@@ -162,21 +162,18 @@
         make.centerX.mas_equalTo(0);
         make.bottom.mas_equalTo(tipLabel.mas_top).mas_offset(-5);
     }];
-
-
-    
     
     __weak __typeof__(self) weakSelf = self;
     
     self.didTitleViewGetDataBlock = ^(NSArray<ACPLotteryTitleModel *> *titleArr,NSInteger awardAmount) {
-        
-        scrollView.contentSize = CGSizeMake(((SCREENWIDTH - 8)/5 +2) * titleArr.count -2, 44);
-        
+        NSInteger num = titleArr.count;
+        scrollView.contentSize = CGSizeMake(((SCREENWIDTH - (num - 1) * 2 )/num +2) * num, 44);
+        scrollView.bounces = NO;
         for(int i = 0 ;i < titleArr.count;i++){
             ACPLotteryTitleModel *model = titleArr[i];
             UIButton *btn = [UIButton new];
             [scrollView addSubview:btn];
-            btn.frame = CGRectMake(((SCREENWIDTH -8)/ 5 + 2) * i, 0, (SCREENWIDTH - 8)/5, 44);
+            btn.frame = CGRectMake(((SCREENWIDTH - (num - 1) * 2 )/num + 2) * i, 0, (SCREENWIDTH - (num - 1) * 2 )/num, 44);
             [btn setTitle:model.lottery_kind_name forState:UIControlStateNormal];
             [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];

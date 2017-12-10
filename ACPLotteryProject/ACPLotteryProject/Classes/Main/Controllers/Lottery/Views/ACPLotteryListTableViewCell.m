@@ -130,6 +130,8 @@
             detailLabel.text = detailArr[i];
             detailLabel.textAlignment = NSTextAlignmentCenter;
         }
+    }else{
+        _detailView.hidden = YES;
     }
 }
 
